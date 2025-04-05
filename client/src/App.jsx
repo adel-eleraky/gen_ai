@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BsRobot } from 'react-icons/bs';
-import { FiAlertCircle, FiMessageSquare, FiPlus, FiSend, FiUser } from 'react-icons/fi';
 import './App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faRobot,
+  faExclamationCircle,
+  faCommentAlt,
+  faPlus,
+  faPaperPlane,
+  faUser
+} from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [chats, setChats] = useState([{ id: 1, messages: [], title: 'New Chat' }]);
@@ -29,12 +36,12 @@ function App() {
   };
 
   const updateChatTitle = (chatId, firstMessage) => {
-    setChats(chats.map(chat => 
-      chat.id === chatId ? { 
-        ...chat, 
-        title: firstMessage.length > 30 
-          ? firstMessage.substring(0, 30) + '...' 
-          : firstMessage 
+    setChats(chats.map(chat =>
+      chat.id === chatId ? {
+        ...chat,
+        title: firstMessage.length > 30
+          ? firstMessage.substring(0, 30) + '...'
+          : firstMessage
       } : chat
     ));
   };
@@ -43,10 +50,10 @@ function App() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMessage = { 
-      role: 'user', 
+    const userMessage = {
+      role: 'user',
       content: input,
-      timestamp: new Date().toISOString()  
+      timestamp: new Date().toISOString()
     };
 
     const updatedChats = chats.map(chat => {
@@ -69,15 +76,15 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: input })
       });
-      
+
       const data = await response.json();
-      
+
       setChats(prevChats => prevChats.map(chat => {
         if (chat.id === activeChat) {
           return {
             ...chat,
-            messages: [...chat.messages, { 
-              role: 'assistant', 
+            messages: [...chat.messages, {
+              role: 'assistant',
               content: data.response,
               isFailover: data.isFailover,
               timestamp: new Date().toISOString()
@@ -92,10 +99,10 @@ function App() {
         if (chat.id === activeChat) {
           return {
             ...chat,
-            messages: [...chat.messages, { 
-              role: 'assistant', 
+            messages: [...chat.messages, {
+              role: 'assistant',
               content: 'Sorry, there was an error processing your request.',
-              isError: true 
+              isError: true
             }]
           };
         }
@@ -112,7 +119,7 @@ function App() {
     <div className="app-container">
       <div className="sidebar">
         <button className="new-chat-btn" onClick={createNewChat}>
-          <FiPlus /> New Chat
+          <FontAwesomeIcon icon={faPlus} /> New Chat
         </button>
         <div className="chat-history">
           {chats.map(chat => (
@@ -121,7 +128,7 @@ function App() {
               className={`chat-history-item ${chat.id === activeChat ? 'active' : ''}`}
               onClick={() => setActiveChat(chat.id)}
             >
-              <FiMessageSquare />
+              <FontAwesomeIcon icon={faCommentAlt} />
               <span>{chat.title}</span>
             </div>
           ))}
@@ -135,31 +142,25 @@ function App() {
             {loading ? 'Typing...' : 'Online'}
           </div>
         </div>
-        
+
         <div className="chat-messages">
           {activeMessages.map((message, index) => (
             <div key={index} className={`message-container ${message.role}`}>
               <div className="message-avatar">
-                {message.role === 'user' ? (
-                  <FiUser className="avatar-icon" />
-                ) : (
-                  <BsRobot className="avatar-icon" />
-                )}
+                <FontAwesomeIcon
+                  icon={message.role === 'user' ? faUser : faRobot}
+                  className="avatar-icon"
+                />
               </div>
               <div className={`message ${message.isError ? 'error' : ''}`}>
                 <div className="message-content">
                   {message.content}
-                  {message.isFailover && (
-                    <div className="failover-notice">
-                      <FiAlertCircle />
-                      <span>Response from backup system</span>
-                    </div>
-                  )}
+                  {/* {message.isFailover} */}
                 </div>
                 <div className="message-timestamp">
-                  {new Date(message.timestamp).toLocaleTimeString([], { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
+                  {new Date(message.timestamp).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
                   })}
                 </div>
               </div>
@@ -188,7 +189,7 @@ function App() {
               autoFocus
             />
             <button type="submit" disabled={loading}>
-              <FiSend className="send-icon" />
+              <FontAwesomeIcon icon={faPaperPlane} className="send-icon" />
             </button>
           </div>
         </form>

@@ -1,7 +1,6 @@
 import express from "express"
 import cors  from "cors"
 import OpenAI from "openai"
-import {Configuration, OpenAIApi} from "openai"
 import axios from "axios"
 import "dotenv/config"
 
@@ -16,7 +15,7 @@ const openai = new OpenAI({
 async function generateResponse(prompt) {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", 
+      model: "gpt-4o-mini", 
       messages: [{ role: "user", content: prompt }],
     });
 

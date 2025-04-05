@@ -18,7 +18,9 @@
   margin: 0;
   padding: 0;
 }
-
+#root {
+  width: 100%;
+}
 .app-container {
   display: flex;
   height: 100vh;
@@ -150,6 +152,7 @@
   border-radius: 15px;
   position: relative;
   animation: fadeIn 0.3s ease;
+  color: black !important;
 }
 
 .message.user {
@@ -176,12 +179,12 @@
 
 .message-timestamp {
   font-size: 0.75rem;
-  color: #666;
+  /* color: #666; */
   text-align: right;
 }
 
 .user .message-timestamp {
-  color: rgba(255,255,255,0.8);
+  /* color: rgba(255,255,255,0.8); */
 }
 
 .failover-notice {
@@ -212,6 +215,7 @@ input {
   font-size: 1rem;
   transition: all 0.3s ease;
   background: var(--chat-bg);
+  color: black  !important;
 }
 
 input:focus {
